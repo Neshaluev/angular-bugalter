@@ -1,0 +1,58 @@
+<div class="page-title">
+    <h4>Категории</h4>
+    <button
+      class="waves-effect waves-light btn grey darken-1"
+      routerLink="/categories/new"
+    >Добавить категорию</button>
+</div>
+
+<!-- <div class="row" *ngIf="!loading">
+    <div class="col s12">
+        <div class="collection"> -->
+          <!-- динамический вывод всех категорий -->
+            <!-- <a
+              *ngFor="let category of categories"
+              href="#!" class="collection-item"
+            >{{category.name}}</a>
+        </div>
+    </div>
+</div> -->
+
+<!-- categories$ | async - стрим пропущен  через пайп асинк тем самы мы подписываемся под этот стрим  потом склыдываем в категории в доступные днном шабоне -->
+<!-- ; else loader - пока не произошла загрузка показывай лоадер -->
+<div
+ class="row"
+ *ngIf="categories$ | async as categories; else loader"
+>
+    <div class="col s12">
+      <!-- нужно показывать див если коллекция не пустая -->
+        <div
+          class="collection"
+          *ngIf="categories.length  !== 0; else empty"
+        >
+          <!-- динамический вывод всех категорий -->
+            <a
+              *ngFor="let category of categories"
+              [routerLink]="['/categories', category._id]"
+              class="collection-item"
+            >{{category.name}}</a>
+        </div>
+        <!-- если коллекция пустая -->
+        <ng-template #empty>
+          <div class="center">
+            У вас нет категорий
+          </div>
+        </ng-template>
+    </div>
+</div>
+
+<!-- лоадер не нужно импортировать просто взять имя  -->
+<!-- <app-loader
+  *ngIf="loading"
+></app-loader> -->
+
+
+<!-- референция на поток -->
+<ng-template #loader>
+  <app-loader ></app-loader>
+</ng-template>

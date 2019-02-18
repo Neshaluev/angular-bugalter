@@ -1,0 +1,97 @@
+<div class="row">
+    <div class="col s12">
+        <div class="page-subtitle">
+            <h4>Позиции:</h4>
+            <button
+              class="waves-effect waves-light btn grey darken-1 btn-small"
+              (click)="onAddPosition()"
+            >
+                Добавить позицию
+            </button>
+        </div>
+        <!-- если есть загрузка данных то показываем  лоадер  иначе данные -->
+        <div *ngIf="!loading; else loader">
+          <div class="collection" *ngIf="positions.length !== 0; else empty">
+              <a
+                *ngFor="let position of positions"
+                class="collection-item collection-item-icon"
+                (click)="onSelectPosition(position)"
+              >
+                  <span>
+                      {{position.name}} <strong>{{ position.cost }} руб.</strong>
+                  </span>
+                  <span>
+                    <!-- при нажатия на кнопку остановит погружение на для этого передаем итема чтобы не вызывать окно  -->
+                      <i
+                        class="material-icons"
+                        (click)="onDeletePosition($event, position)"
+                      >delete</i>
+                  </span>
+              </a>
+          </div>
+          <!-- если нету колеллекций -->
+          <ng-template #empty>
+            <div class="center">
+              В категории отсутствуют позиции
+            </div>
+          </ng-template>
+
+        </div>
+        <!-- лоадер -->
+        <ng-template #loader>
+          <app-loader></app-loader>
+        </ng-template>
+    </div>
+</div>
+
+
+<!-- MODAL -->
+<!-- дем референцию модал чтобы можно управлять модальным окном - #modal -->
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="modal" #modal>
+      <div class="modal-content">
+          <h4 class="mb1">Добавить позицию</h4>
+          <div class="input-field">
+              <input
+                id="pos-name" type="text"
+                formControlName="name"
+                [ngClass]="{'invalid': form.get('name').invalid && form.get('name').touched}"
+              >
+              <label for="pos-name">Название</label>
+              <span
+                class="helper-text red-text"
+                *ngIf="form.get('name').invalid && form.get('name').touched"
+              >Заполните название позиции.</span>
+          </div>
+          <div class="input-field">
+              <input
+              id="pos-cost"
+              type="number"
+              min="1"
+              formControlName="cost"
+              [ngClass]="{'invalid': form.get('cost').invalid && form.get('cost').touched}"
+              >
+              <label for="pos-cost">Цена</label>
+              <span
+              class="helper-text red-text"
+              *ngIf="form.get('cost').invalid && form.get('cost').touched"
+            >Введите корректную цену.</span>
+          </div>
+      </div>
+      <div class="modal-footer">
+          <!-- type="button" чтобы нажималсь кнопка а не отправлялась форма -->
+          <button
+            type="button"
+            (click)="onCancel()"
+            class="modal-action waves-effect waves-black btn-flat"
+            [disabled]="form.disabled"
+          >Отмена</button>
+          <!-- type="submit" - отправляет форму -->
+          <button
+            type="submit"
+            class="modal-action btn waves-effect"
+            [disabled]="form.invalid || form.disabled"
+          >Сохранить</button>
+      </div>
+  </div>
+</form>

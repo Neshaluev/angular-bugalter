@@ -1,0 +1,53 @@
+<!--SIDEBAR-->
+<ul class="sidenav sidenav-fixed a-sidenav">
+  <h4>Newborn</h4>
+
+  <!-- выводим динамически ссылки -->
+  <!-- routerLinkActive="active" - Добавление активного класса по клику -->
+  <li
+    class="bold"
+    *ngFor="let link of links"
+    routerLinkActive="active"
+    >
+    <a [routerLink]="[link.url]" href="#" class="waves-effect waves-orange">
+      {{link.name}}
+    </a>
+  </li>
+
+  <!-- $event - передача событию интему -->
+  <li class="bold last">
+    <a href="#" class="waves-effect waves-orange" (click)="logout($event)">
+      Выйти
+    </a>
+  </li>
+</ul>
+<!--CONTENT-->
+<main class="content">
+  <router-outlet></router-outlet>
+</main>
+<!--Floating button-->
+<!-- floating - Локальная референция  -->
+<div class="fixed-action-btn" #floating>
+  <a class="btn-floating btn-large red">
+      <i class="large material-icons">add</i>
+  </a>
+  <ul>
+    <!-- конопка введент на страницу нового заказа -->
+      <li >
+        <a class="btn-floating green" routerLink="/order">
+          <i class="material-icons">assignment</i>
+        </a>
+      </li>
+    <!-- конопка введент на страницу добавление новой категории -->
+      <li>
+        <a class="btn-floating blue" routerLink="/categories/new">
+          <i class="material-icons">list</i>
+        </a>
+      </li>
+  </ul>
+</div>
+
+
+<a id="menu" class="waves-effect waves-light btn btn-floating"><i class="material-icons">info</i></a>
+
+
